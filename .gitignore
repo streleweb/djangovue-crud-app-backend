@@ -1,0 +1,6 @@
+venv/
+venv
+.vscode/
+db.sqlite3
+DjangoVueCrudAPI/__pycache__/
+todos/__pycache__
