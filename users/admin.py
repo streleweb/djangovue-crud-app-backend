@@ -27,6 +27,7 @@ class UserAdmin(BaseUserAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     pass
 
+
     # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)

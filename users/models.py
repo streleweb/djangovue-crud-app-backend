@@ -56,12 +56,13 @@ class User(AbstractBaseUser):
         # Simplest possible answer: Yes, always
         return True
 
-# USERPROFILE
-
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, primary_key=True)
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True)
+
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
     image = models.ImageField(upload_to='profile-images')

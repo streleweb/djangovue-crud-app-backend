@@ -1,11 +1,12 @@
 from django.db import models
+from utils.models import Timestamps
+from django.contrib.auth import get_user_model
 
 
-class Task(models.Model):
+class Task(Timestamps, models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=1000)
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
+    description = models.CharField(default='', blank=True, max_length=800)
 
     def __str__(self):
         return self.title
