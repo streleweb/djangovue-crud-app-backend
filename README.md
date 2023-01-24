@@ -53,12 +53,37 @@ JSON returns
 ```
 
 
+#### necessary fields
 
+## Task
+ 
+ - user
+ - title
+ - description
+ - completed
+ - created_at
+ - updated_at
 
+## Notes
 
-## Roadmap, still to do:
+ - name
+ - description
+ - user
+ - created_at
+ - updated_at
 
-- VueJS frontend (separate from backend)
+ ## NoteItem
+
+ - text
+ - note
+ - created_at 
+ - updated_at
+
+ ## User
+
+ - email (login)
+ - password
+ 
 
 
 
