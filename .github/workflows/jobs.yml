@@ -26,10 +26,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2 #checks code out inside (code made available)
-      - name: Set up Python 3.9.6
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9.6
       - name: activateVenv
         run: |
           pip install --upgrade pip
@@ -37,10 +33,12 @@ jobs:
       - name: Test
         run: | 
           source venv/bin/activate
+          pip install -r requirements.txt
           python manage.py test
           deactivate
       - name: Lint
         run: |
           source venv/bin/activate
+          pip install -r requirements.txt
           flake8
           deactivate
