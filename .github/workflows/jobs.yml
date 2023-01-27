@@ -34,7 +34,7 @@ jobs:
         run: |
           pip install --upgrade pip
           python -m venv venv
-          source env/bin/activate
+          source venv/bin/activate
           echo "VIRTUAL ENV:" $VIRTUAL_ENV
       - name: Test
         run: python manage.py test
