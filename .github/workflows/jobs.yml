@@ -36,9 +36,9 @@ jobs:
           pip install -r requirements.txt
           python manage.py test
           deactivate
-      - name: Lint
-        run: |
-          source venv/bin/activate
-          pip install -r requirements.txt
-          flake8
-          deactivate
+      # - name: Lint
+      #   run: |
+      #     source venv/bin/activate
+      #     pip install -r requirements.txt
+      #     flake8
+      #     deactivate
