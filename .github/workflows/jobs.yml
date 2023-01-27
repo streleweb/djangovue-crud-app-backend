@@ -26,7 +26,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2 #checks code out inside (code made available)
+      - name: activateVenv
+        run: venv\Scripts\activate.bat
       - name: Test
         run: python manage.py test
       - name: Linti
         run: flake8
+      - name: deactivateVenv
+        run: deactivate
