@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - DEV=true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    command: >
+      sh -c "python3 manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=drutex
+      - DB_USER=streleweb
+      - DB_PASS=justforlocaldev
+    depends_on:
+      #waits for db service to start
+      - db
+
+  db:
+    image: mysql:8.0.32-debian
+    environment:
+      MYSQL_DATABASE: 'drutex'
+      MYSQL_USER: 'streleweb'
+      MYSQL_PASSWORD: 'justforlocaldev'
+      MYSQL_ROOT_PASSWORD: 'justforlocaldev'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    restart: always
+    volumes:
+      - dev-db-data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  dev-db-data:
+
+
