@@ -4,37 +4,37 @@ services:
   app:
     build:
       context: .
-      args:
-        - DEV=true
     ports:
       - "8000:8000"
     volumes:
-      - ./:/app
+      - .:/app
     command: >
-      sh -c "python3 manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py wait_for_db &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     environment:
       - DB_HOST=db
       - DB_NAME=drutex
       - DB_USER=streleweb
       - DB_PASS=justforlocaldev
+      - DEBUG=1
     depends_on:
       #waits for db service to start
       - db
 
   db:
-    image: mysql:8.0.32-debian
+    image: postgres:13-alpine
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
     environment:
-      MYSQL_DATABASE: 'drutex'
-      MYSQL_USER: 'streleweb'
-      MYSQL_PASSWORD: 'justforlocaldev'
-      MYSQL_ROOT_PASSWORD: 'justforlocaldev'
+      - POSTGRES_DB=drutex
+      - POSTGRES_USER=streleweb
+      - POSTGRES_PASSWORD=justforlocaldev
     ports:
       - '3306:3306'
     expose:
       - '3306'
     restart: always
-    volumes:
-      - dev-db-data:/var/lib/mysql
 
   adminer:
     image: adminer
@@ -44,5 +44,6 @@ services:
 
 volumes:
   dev-db-data:
+  .:
 
 

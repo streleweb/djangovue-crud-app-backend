@@ -27,6 +27,12 @@ SECRET_KEY = 'django-insecure-&-q2v^-9gv^04q03o#$4@(+*wknq+7%l(o8z*u^oa@^9yzbbi#
 DEBUG = True
 
 ALLOWED_HOSTS = []
+ALLOWED_HOSTS.extend(
+    filter(
+        None,
+        os.environ.get('ALLOWED_HOSTS', '').split(','),
+    )
+)
 
 
 # Application definition
@@ -44,6 +50,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'notes.apps.NotesConfig',
     'utils.apps.UtilsConfig',
+    'core.apps.CoreConfig',
     'corsheaders',
 ]
 
@@ -88,12 +95,21 @@ WSGI_APPLICATION = 'DjangoVueCrudAPI.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
+    # postgres
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('DB_HOST'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASS'),
+    }
+
     # 'default': {
     #    'ENGINE': 'django.db.backends.sqlite3',
     #    'NAME': BASE_DIR / 'db.sqlite3',
     # }
 
-    #standard
+    # mysql
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'drutex',
@@ -103,15 +119,15 @@ DATABASES = {
     #     'PORT': '3306',
     # }
 
-    #DOCKER mysql image
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('MYSQL_DATABASE', 'drutex'),
-        'USER': os.environ.get('MYSQL_USER', 'streleweb'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'justforlocaldev'),
-        'HOST': os.environ.get('MYSQL_DATABASE_HOST', 'db'),
-        'PORT': os.environ.get('MYSQL_DATABASE_PORT', 3306),
-    }
+    # DOCKER mysql image
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': os.environ.get('MYSQL_DATABASE', 'drutex'),
+    #     'USER': os.environ.get('MYSQL_USER', 'streleweb'),
+    #     'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'justforlocaldev'),
+    #     'HOST': os.environ.get('MYSQL_DATABASE_HOST', 'db'),
+    #     'PORT': os.environ.get('MYSQL_DATABASE_PORT', 3306),
+    # }
 }
 
 AUTH_USER_MODEL = 'users.User'

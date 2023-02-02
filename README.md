@@ -1,14 +1,18 @@
 
 # Drutex CRUD App Backend (API)
 
-CRUD-app with different user-permissions for the interview on the 26th of January 2023.
+CRUD-app with different user-permissions for the code-review.
 
 
 
 ## Used Technologies
 
-Python 3.9.6, Django 3.2, djangorestframework, mysqlclient, drf-nested-routers
+Python 3.9.6, Django 3.2, djangorestframework, postgreSQL, drf-nested-routers
+Docker, Github-Actions for unittest-jobs, psycopg2 (db-connector)
 
+## Applied principles
+- TDD using Python unit testing framework
+- DRY (don`t repeat yourself)
 
 ## API Reference
 JSON returns 
