@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'utils.apps.UtilsConfig',
     'core.apps.CoreConfig',
     'corsheaders',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,11 @@ DATABASES = {
 }
 
 AUTH_USER_MODEL = 'users.User'
+
+# tell rest_framework to generate schema based on the AutoSchema class
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

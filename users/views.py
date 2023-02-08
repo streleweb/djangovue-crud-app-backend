@@ -1,21 +1,41 @@
-from rest_framework import serializers, viewsets
+from rest_framework import viewsets, generics, authentication, permissions
 from .models import User
-from django.contrib.auth import get_user_model
+from .serializers import UserSerializer, AuthTokenSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
 
-
-# Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ('email', 'password')
-        extra_kwargs = {'password': {'write_only': True, 'min_length': 8}}
-
-    def create(self, validated_data):
-        return get_user_model().objects.create_user(**validated_data)
-
-# ViewSets define the view behavior.
+# TODO: make UserViewSet only accesible by admin in production
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    # make sure anonym Users can not access /users in production
+    # permission_classes = [
+    #     permissions.DjangoModelPermissions, permissions.IsAuthenticated]
+
+# accessible by anyone to create user
+
+
+class CreateUserView(generics.CreateAPIView):
+    """Create new user in system"""
+    serializer_class = UserSerializer
+
+
+# email and pw needed to get auth token
+class CreateTokenView(ObtainAuthToken):
+    """Create auth token for user"""
+    serializer_class = AuthTokenSerializer
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+
+class ManageUserView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserSerializer
+    authentication_classes = [authentication.TokenAuthentication]
+    # user must be authenticated to use this API
+    permission_classes = [permissions.IsAuthenticated]
+
+    # retrieve user that is attached to the request, get_object calls serializer
+    def get_object(self):
+        """Retrieve and return authenticated user"""
+        return self.request.user

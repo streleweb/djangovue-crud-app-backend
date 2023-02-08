@@ -1,6 +1,7 @@
-from rest_framework import serializers, viewsets
+from rest_framework import serializers, viewsets, permissions, authentication
 from .models import Task
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 # Serializers define the API representation.
@@ -15,6 +16,11 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
 
 # ViewSets define the view behavior.
-class TaskViewSet(viewsets.ModelViewSet):
+class TaskViewSet(viewsets.ModelViewSet, PermissionRequiredMixin):
+    authentication_classes = [authentication.TokenAuthentication]
+    # user must be authenticated to use this API
+    permission_classes = [permissions.IsAuthenticated]
+    permission_required = 'todos.change_task'
+
     queryset = Task.objects.all()
     serializer_class = TaskSerializer

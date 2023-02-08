@@ -15,7 +15,7 @@ Docker, Github-Actions for unittest-jobs, psycopg2 (db-connector)
 - DRY (don`t repeat yourself)
 
 ## API Reference
-JSON returns 
+JSON returns
 #### TODOs
 
 ```http
@@ -60,7 +60,7 @@ JSON returns
 #### necessary fields
 
 ## Task
- 
+
  - user
  - title
  - description
@@ -80,14 +80,19 @@ JSON returns
 
  - text
  - note
- - created_at 
+ - created_at
  - updated_at
 
  ## User
 
  - email (login)
  - password
- 
 
 
+ ### Authorization
 
+ - /login with valid email and pw will provide token for frontend
+
+ ### API docs
+
+ - added OpenAPI swagger docs
