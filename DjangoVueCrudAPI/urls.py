@@ -16,14 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import (SpectacularAPIView, SpectacularSwaggerView)
-from users.views import CreateTokenView, ManageUserView, CreateUserView
+from users.views import CreateTokenView, ManageUserView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('todos/', include('todos.urls'), name='todos'),
     path('notes/', include('notes.urls'), name='notes'),
     path('users/', include('users.urls'), name='users'),
-    path('register/', CreateUserView.as_view(), name='create-user'),
+    # path('register/', CreateUserView.as_view(), name='create-user'),
     path('login/', CreateTokenView.as_view(), name='user-token'),
     path('myuser/', ManageUserView.as_view(), name='my-user'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),

@@ -3,14 +3,28 @@ from django.contrib.auth import (get_user_model, authenticate)
 from django.contrib.auth.models import Group, User, Permission
 from django.contrib.contenttypes.models import ContentType
 
+from users.models import UserProfile
+
 
 # Serializers define the API representation.
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['first_name', 'last_name', 'image',
+                  'facebook_profile', 'linkedin_profile', 'website']
 
+
+# Will only return a single UserProfile object
+# for the given user, and it will not allow for
+# updates or creation of UserProfile objects
+# through the serializer.
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    userprofile = UserProfileSerializer(many=False, required=False)
+
     class Meta:
         model = get_user_model()
-        fields = ('email', 'password')
+        fields = ('email', 'password', 'userprofile')
         extra_kwargs = {'password': {'write_only': True, 'min_length': 8}}
 
     def create(self, validated_data):
@@ -32,16 +46,25 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             # elif perm.codename == "view_user":
             #     normaluser_group.permissions.add(perm)
 
-        created_user = get_user_model().objects.create_user(**validated_data)
+        profile_data = validated_data.pop('userprofile')
+
+        if profile_data:
+            user_id = self.context['request'].user.id
+            profile_instance, created = UserProfile.objects.get_or_create(
+                user_id=user_id)
+            profile_data.update({"user_id": user_id})
+            if not created:
+                profile_instance.__dict__.update(profile_data)
+                profile_instance.save()
+            user_instance = get_user_model().objects.create_user(
+                userprofile=profile_instance, **validated_data)
+
+        else:
+            get_user_model().objects.create_user(**validated_data)
         # Add the user to the normaluser group
-        created_user.groups.add(normaluser_group)
+        user_instance.groups.add(normaluser_group)
 
-        print(created_user.has_perm("User.delete_user"))
-        print(created_user.has_perm("User.change_user"))
-        print(created_user.has_perm("User.view_user"))
-        print(created_user.has_perm("User.add_user"))
-
-        return created_user
+        return user_instance
 
     def update(self, instance, validated_data):
         """Update and return user"""

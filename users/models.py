@@ -65,10 +65,11 @@ class UserProfile(models.Model):
 
     first_name = models.CharField(max_length=80)
     last_name = models.CharField(max_length=80)
-    image = models.ImageField(upload_to='profile-images')
-    facebook_profile = models.CharField(max_length=80)
-    linkedin_profile = models.CharField(max_length=80)
-    website = models.CharField(max_length=80)
+    image = models.ImageField(
+        upload_to='profile-images', null=True, blank=True)
+    facebook_profile = models.CharField(max_length=80, null=True, blank=True)
+    linkedin_profile = models.CharField(max_length=80, null=True, blank=True)
+    website = models.CharField(max_length=80, null=True, blank=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
