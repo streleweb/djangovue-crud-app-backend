@@ -47,3 +47,18 @@ class UserModelTests(TestCase):
         """Creating user without an email should raise a ValueError"""
         with self.assertRaises(ValueError):
             get_user_model().objects.create_user('')
+
+    def test_create_user_too_short_pw_should_raise_error(self):
+        """Test should fail, password too short"""
+        email = 'strelewebtest@example.com'
+        password = 'testi'
+        user = get_user_model().objects.create_user(
+            email=email,
+            password=password
+        )
+
+        self.assertEqual(user.email, email)
+
+        # needed to use check_password function here,
+        # to check for the actual hash
+        self.assertTrue(user.check_password(password))

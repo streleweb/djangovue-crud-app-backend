@@ -27,7 +27,7 @@ urlpatterns = [
     path('login/', CreateTokenView.as_view(), name='user-token'),
     path('myuser/', ManageUserView.as_view(), name='my-user'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'),
-         name='swagger'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'),
+         name='api-docs'),
 
 ]

@@ -24,17 +24,17 @@ class UserViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def get_authenticators(self):
-        if self.request.method == 'POST':
+        if self.request == 'POST':
             authentication_classes = []
         else:
             authentication_classes = [authentication.TokenAuthentication]
         return [authenticator() for authenticator in authentication_classes]
 
-    @action(detail=True, methods=['get', 'put', 'patch', 'delete'])
+    @action(detail=True, methods=['get', 'post', 'put', 'patch', 'delete'])
     def userprofile(self, request, pk=None):
         user = self.get_object()
         user_profile, created = UserProfile.objects.get_or_create(user=user)
-        if request.method in ['PUT', 'PATCH']:
+        if request.method in ['PUT', 'PATCH', 'POST']:
             serializer = UserProfileSerializer(
                 user_profile, data=request.data, partial=True)
             if serializer.is_valid():
@@ -48,6 +48,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
         serializer = UserProfileSerializer(user_profile)
         return Response(serializer.data)
+
 
 # accessible by anyone to create user
 
