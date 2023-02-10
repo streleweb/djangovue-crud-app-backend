@@ -96,3 +96,12 @@ JSON returns
  ### API docs
 
  - added OpenAPI swagger docs
+
+
+ currently working on:
+  - /users/ POST create new user (with email and password only, or including userprofile object) FINISHED -> NO AUTH token required
+  - /user/{id}/ GET user by id FINISHED -> AUTH token required
+  - /user/{id}/ PUT/PATCH/DELETE (update user) FINISHED -> password and auth token required
+
+  explicit userprofile updates should be handled via /users/{id}/userprofile/
+

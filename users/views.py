@@ -17,11 +17,18 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def get_permissions(self):
-        if self.action in ['create']:
+        if self.request.method == 'POST':
             permission_classes = [permissions.AllowAny]
         else:
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]
+
+    def get_authenticators(self):
+        if self.request.method == 'POST':
+            authentication_classes = []
+        else:
+            authentication_classes = [authentication.TokenAuthentication]
+        return [authenticator() for authenticator in authentication_classes]
 
     @action(detail=True, methods=['get', 'put', 'patch', 'delete'])
     def userprofile(self, request, pk=None):
