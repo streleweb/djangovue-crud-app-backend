@@ -13,7 +13,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ['first_name', 'last_name', 'image',
                   'facebook_profile', 'linkedin_profile', 'website']
-        extra_kwargs = {'user': {'required': False, 'default': None}}
+        extra_kwargs = {'user': {'required': False, 'default': None}, }
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -21,7 +21,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('email', 'password', 'userprofile')
+        fields = ('id', 'email', 'password', 'userprofile')
         extra_kwargs = {'password': {'write_only': True, 'min_length': 8}}
 
     def create(self, validated_data):
@@ -45,6 +45,17 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
         profile_data = validated_data.pop('userprofile', None)
         user_instance = get_user_model().objects.create_user(**validated_data)
+
+        # Create user profile with blank attributes and associate with the user
+        profile_instance = UserProfile.objects.create(
+            user=user_instance,
+            first_name='',
+            last_name='',
+            image='',
+            facebook_profile='',
+            linkedin_profile='',
+            website=''
+        )
 
         if profile_data:
             # add user id to the profile_data dictionary via update function

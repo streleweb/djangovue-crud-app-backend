@@ -6,15 +6,17 @@ from rest_framework.decorators import action
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from rest_framework.response import Response
-
-# TODO: make UserViewSet only accesible by admin in production
+from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
+from django.conf import settings
+from django.http import HttpResponse
+from django.views.static import serve
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    """Allows unauthenticated users to create
-    a new user, but requires authentication to retrieve, update, delete"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    lookup_field = 'id'
 
     def get_permissions(self):
         if self.request.method == 'POST':
@@ -50,21 +52,6 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-# accessible by anyone to create user
-
-
-# class CreateUserView(generics.CreateAPIView):
-#     """Create new user in system"""
-#     serializer_class = UserSerializer
-
-
-# email and pw needed to get auth token
-class CreateTokenView(ObtainAuthToken):
-    """Create auth token for user"""
-    serializer_class = AuthTokenSerializer
-    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
-
-
 class ManageUserView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     authentication_classes = [authentication.TokenAuthentication]
@@ -77,6 +64,39 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
+class UserImageView(APIView):
+    """GET endpoint to retrieve userimages that have been uploaded"""
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        file_path = kwargs.get('file_path', '')
+        response = serve(request, file_path, document_root=settings.MEDIA_ROOT)
+        if not response:
+            return HttpResponse(status=404)
+        return response
+
+# email and pw needed to get auth token
+
+
+class CustomAuthToken(ObtainAuthToken):
+    """Override standard token return, to also return userid"""
+    serializer_class = AuthTokenSerializer
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(
+            data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'id': user.id
+        })
+
+
+# commented out, since I decided to include the ProfileData in the UserViewSet
 # class UserProfileViewSet(viewsets.ModelViewSet):
 #     queryset = User.objects.all()
 #     serializer_class = UserProfileSerializer

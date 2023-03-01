@@ -63,13 +63,18 @@ class UserProfile(models.Model):
         on_delete=models.CASCADE,
         primary_key=True)
 
-    first_name = models.CharField(max_length=80)
-    last_name = models.CharField(max_length=80)
+    first_name = models.CharField(
+        max_length=80, null=True, blank=True, default='')
+    last_name = models.CharField(
+        max_length=80, null=True, blank=True, default='')
     image = models.ImageField(
-        upload_to='profile-images', null=True, blank=True)
-    facebook_profile = models.CharField(max_length=80, null=True, blank=True)
-    linkedin_profile = models.CharField(max_length=80, null=True, blank=True)
-    website = models.CharField(max_length=80, null=True, blank=True)
+        upload_to='', blank=True, null=True, default='')
+    facebook_profile = models.CharField(
+        max_length=255, null=True, blank=True, default='')
+    linkedin_profile = models.CharField(
+        max_length=255, null=True, blank=True, default='')
+    website = models.CharField(
+        max_length=80, null=True, blank=True, default='')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'

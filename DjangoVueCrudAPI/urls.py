@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import (SpectacularAPIView, SpectacularSwaggerView)
-from users.views import CreateTokenView, ManageUserView
+from users.views import CustomAuthToken, ManageUserView, UserImageView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,10 +25,11 @@ urlpatterns = [
     path('notes/', include('notes.urls'), name='notes'),
     path('users/', include('users.urls'), name='users'),
     # path('register/', CreateUserView.as_view(), name='create-user'),
-    path('login/', CreateTokenView.as_view(), name='user-token'),
+    path('login/', CustomAuthToken.as_view(), name='user-token'),
     path('myuser/', ManageUserView.as_view(), name='my-user'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('docs/', SpectacularSwaggerView.as_view(url_name='schema'),
          name='api-docs'),
-
+    path('media/<path:file_path>',
+         UserImageView.as_view(), name='user_image_view'),
 ]
