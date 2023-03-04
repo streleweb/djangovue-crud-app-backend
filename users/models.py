@@ -67,8 +67,8 @@ class UserProfile(models.Model):
         max_length=80, null=True, blank=True, default='')
     last_name = models.CharField(
         max_length=80, null=True, blank=True, default='')
-    image = models.ImageField(
-        upload_to='', blank=True, null=True, default='')
+    image = models.CharField(
+        max_length=255, blank=True, null=True, default='')
     facebook_profile = models.CharField(
         max_length=255, null=True, blank=True, default='')
     linkedin_profile = models.CharField(
