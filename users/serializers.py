@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from rest_framework import serializers
 from django.contrib.auth import (get_user_model, authenticate)
 from django.contrib.auth.models import Group, User, Permission
@@ -81,6 +82,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return user_instance
 
     def update(self, instance, validated_data):
+        # remove pw (pop) from validated_data and update calling the superclasses update method
+        password = validated_data.pop('password', None)
+
+        if password:
+            if not instance.check_password(password):
+                raise ValidationError("Wrong password! Try again.")
+
         userprofile_data = validated_data.pop('userprofile', None)
         if userprofile_data:
             userprofile_serializer = self.fields['userprofile']
@@ -89,16 +97,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                 userprofile, userprofile_data)
             validated_data['userprofile'] = userprofile
         return super().update(instance, validated_data)
-
-        # remove pw (pop) from validated_data and update calling the superclasses update method
-        # password = validated_data.pop('password', None)
-        # user = super().update(instance, validated_data)
-
-        # if password:
-        #     user.set_password(password)
-        #     user.save()
-
-        # return user
 
 
 class AuthTokenSerializer(serializers.Serializer):
@@ -126,52 +124,52 @@ class AuthTokenSerializer(serializers.Serializer):
         return attrs
 
 
-class Base64ImageField(serializers.ImageField):
-    """
-    A Django REST framework field for handling image-uploads through raw post data.
-    It uses base64 for encoding and decoding the contents of the file.
+# class Base64ImageField(serializers.ImageField):
+#     """
+#     A Django REST framework field for handling image-uploads through raw post data.
+#     It uses base64 for encoding and decoding the contents of the file.
 
-    Heavily based on
-    https://github.com/tomchristie/django-rest-framework/pull/1268
+#     Heavily based on
+#     https://github.com/tomchristie/django-rest-framework/pull/1268
 
-    Updated for Django REST framework 3.
-    """
+#     Updated for Django REST framework 3.
+#     """
 
-    def to_internal_value(self, data):
-        from django.core.files.base import ContentFile
-        import base64
-        import six
-        import uuid
+#     def to_internal_value(self, data):
+#         from django.core.files.base import ContentFile
+#         import base64
+#         import six
+#         import uuid
 
-        # Check if this is a base64 string
-        if isinstance(data, six.string_types):
-            # Check if the base64 string is in the "data:" format
-            if 'data:' in data and ';base64,' in data:
-                # Break out the header from the base64 content
-                header, data = data.split(';base64,')
+#         # Check if this is a base64 string
+#         if isinstance(data, six.string_types):
+#             # Check if the base64 string is in the "data:" format
+#             if 'data:' in data and ';base64,' in data:
+#                 # Break out the header from the base64 content
+#                 header, data = data.split(';base64,')
 
-            # Try to decode the file. Return validation error if it fails.
-            try:
-                decoded_file = base64.b64decode(data)
-            except TypeError:
-                self.fail('invalid_image')
+#             # Try to decode the file. Return validation error if it fails.
+#             try:
+#                 decoded_file = base64.b64decode(data)
+#             except TypeError:
+#                 self.fail('invalid_image')
 
-            # Generate file name:
-            # 12 characters are more than enough.
-            file_name = str(uuid.uuid4())[:12]
-            # Get the file name extension:
-            file_extension = self.get_file_extension(file_name, decoded_file)
+#             # Generate file name:
+#             # 12 characters are more than enough.
+#             file_name = str(uuid.uuid4())[:12]
+#             # Get the file name extension:
+#             file_extension = self.get_file_extension(file_name, decoded_file)
 
-            complete_file_name = "%s.%s" % (file_name, file_extension, )
+#             complete_file_name = "%s.%s" % (file_name, file_extension, )
 
-            data = ContentFile(decoded_file, name=complete_file_name)
+#             data = ContentFile(decoded_file, name=complete_file_name)
 
-        return super(Base64ImageField, self).to_internal_value(data)
+#         return super(Base64ImageField, self).to_internal_value(data)
 
-    def get_file_extension(self, file_name, decoded_file):
-        import imghdr
+#     def get_file_extension(self, file_name, decoded_file):
+#         import imghdr
 
-        extension = imghdr.what(file_name, decoded_file)
-        extension = "jpg" if extension == "jpeg" else extension
+#         extension = imghdr.what(file_name, decoded_file)
+#         extension = "jpg" if extension == "jpeg" else extension
 
-        return extension
+#         return extension

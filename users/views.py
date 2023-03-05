@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from rest_framework import viewsets, generics, authentication, permissions
 from .models import User, UserProfile
 from .serializers import (UserSerializer, UserProfileSerializer,
@@ -6,11 +7,11 @@ from rest_framework.decorators import action
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from django.conf import settings
-from django.http import HttpResponse
-from django.views.static import serve
+# from rest_framework.views import APIView
+# from django.conf import settings
+# from django.http import HttpResponse
+# from django.views.static import serve
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -63,20 +64,11 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
         """Retrieve and return authenticated user"""
         return self.request.user
 
-
-class UserImageView(APIView):
-    """GET endpoint to retrieve userimages that have been uploaded"""
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, *args, **kwargs):
-        file_path = kwargs.get('file_path', '')
-        response = serve(request, file_path, document_root=settings.MEDIA_ROOT)
-        if not response:
-            return HttpResponse(status=404)
-        return response
-
-# email and pw needed to get auth token
+    def update(self, request, *args, **kwargs):
+        try:
+            return super().update(request, *args, **kwargs)
+        except ValidationError as e:
+            return Response(e.message, status='400')
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -110,3 +102,18 @@ class CustomAuthToken(ObtainAuthToken):
 #         user = user_profile.user
 #         serializer = UserSerializer(user)
 #         return Response(serializer.data)
+
+# commented out since I used external image API for now
+# class UserImageView(APIView):
+#     """GET endpoint to retrieve userimages that have been uploaded"""
+#     authentication_classes = [authentication.TokenAuthentication]
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def get(self, request, *args, **kwargs):
+#         file_path = kwargs.get('file_path', '')
+#         response = serve(request, file_path, document_root=settings.MEDIA_ROOT)
+#         if not response:
+#             return HttpResponse(status=404)
+#         return response
+
+# email and pw needed to get auth token
