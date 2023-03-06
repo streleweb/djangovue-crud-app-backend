@@ -34,7 +34,7 @@ services:
     depends_on:
       - app
     ports:
-      - 443:8000
+      - 444:8000
     volumes:
       - static-data:/vol/static
 
