@@ -1,6 +1,9 @@
 server {
     listen ${LISTEN_PORT};
 
+    ssl_certificate /certs/fullchain.pem;
+    ssl_certificate_key /certs/privkey.pem;
+
     location /static {
         alias /vol/static;
     }

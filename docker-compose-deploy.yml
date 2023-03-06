@@ -34,10 +34,13 @@ services:
     depends_on:
       - app
     ports:
-      - 444:8000
+      - 443:8000
     volumes:
       - static-data:/vol/static
+      - /etc/letsencrypt/live/todoapi.peterstrele.com:/certs:ro
 
 volumes:
   postgres-data:
   static-data:
+
+
