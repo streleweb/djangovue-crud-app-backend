@@ -14,6 +14,7 @@ pytz==2022.7.1
 sqlparse==0.4.3
 tomli==2.0.1
 tzdata==2022.7
-drf-spectacular==0.25.1
-request==latest
-pyyaml==latest
+drf-spectacular>=0.15.1,<0.16
+# request==latest
+pyyaml==6.0
+uwsgi>=2.0.19<2.1
