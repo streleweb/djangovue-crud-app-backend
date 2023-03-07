@@ -37,7 +37,12 @@ services:
       - 443:8000
     volumes:
       - static-data:/vol/static
-      - /certs:/vol/certs:ro
+      - /certs:/vol/certs:ro :Z # set the SELinux context of the volume
+      - /etc/localtime:/etc/localtime:ro # sync timezones
+      - /etc/timezone:/etc/timezone:ro
+      - /home/ec2-user/certs/privkey.pem:/vol/certs/privkey.pem:ro,Z #  mount privkey.pem with read-only access
+      - /home/ec2-user/certs/fullchain.pem:/vol/certs/fullchain.pem:ro,Z
+    user: "nginx" # Add this line to set the user of the mounted volumes
 
 volumes:
   postgres-data:
