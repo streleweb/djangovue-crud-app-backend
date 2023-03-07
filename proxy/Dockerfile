@@ -11,7 +11,7 @@ ENV APP_PORT=9000
 
 USER root
 
-RUN mkdir -p /vol/static && \
+RUN mkdir -p /vol/static /vol/certs && \
     chmod 755 /vol/static /vol/certs && \
     touch /etc/nginx/conf.d/default.conf && \
     chown nginx:nginx /etc/nginx/conf.d/default.conf && \
