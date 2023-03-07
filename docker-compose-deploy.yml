@@ -37,7 +37,7 @@ services:
       - 443:8000
     volumes:
       - static-data:/vol/static
-      - /certs:/certs:ro
+      - /certs:/vol/certs:ro
 
 volumes:
   postgres-data:
