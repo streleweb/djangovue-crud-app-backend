@@ -38,9 +38,10 @@ services:
     volumes:
       - static-data:/vol/static
       # - /certs:/vol/certs:ro
-      - /etc/localtime:/etc/localtime:ro # sync timezones
-      - /etc/timezone:/etc/timezone:ro
-      - /home/ec2-user/certs:/vol/certs:ro,Z
+      # - /etc/localtime:/etc/localtime:ro # sync timezones
+      # - /etc/timezone:/etc/timezone:ro
+      # - /home/ec2-user/certs:/vol/certs,Z
+      - /etc/letsencrypt/live/todoapi.peterstrele.com:/vol/certs
     user: "nginx" # Add this line to set the user of the mounted volumes
 
 volumes:
