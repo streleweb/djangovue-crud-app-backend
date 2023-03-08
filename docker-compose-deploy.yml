@@ -37,16 +37,11 @@ services:
       - 443:8000
     volumes:
       - static-data:/vol/static
-      # - /certs:/vol/certs:ro
-      # - /etc/localtime:/etc/localtime:ro # sync timezones
-      # - /etc/timezone:/etc/timezone:ro
-      # - /home/ec2-user/certs:/vol/certs,Z
-      - /certs:/vol/certs:ro
+
     user: "nginx" # Add this line to set the user of the mounted volumes
 
 volumes:
   postgres-data:
   static-data:
-  certs:
 
 

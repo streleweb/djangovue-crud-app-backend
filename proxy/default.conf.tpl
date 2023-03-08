@@ -1,8 +1,5 @@
 server {
-    listen ${LISTEN_PORT};
-
-    ssl_certificate /vol/certs/nginx-selfsigned.crt;
-    ssl_certificate_key /vol/certs/nginx-selfsigned.key;
+    listen ${LISTEN_PORT} ssl;
 
     location /static {
         alias /vol/static;

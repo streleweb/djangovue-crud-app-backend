@@ -11,15 +11,13 @@ ENV APP_PORT=9000
 
 USER root
 
-RUN mkdir -p /vol/static /vol/certs && \
-    chmod 755 /vol/static /vol/certs && \
+RUN mkdir -p /vol/static && \
+    chmod 755 /vol/static && \
     touch /etc/nginx/conf.d/default.conf && \
     chown nginx:nginx /etc/nginx/conf.d/default.conf && \
-    chown nginx:nginx /vol/certs && \
     chmod +x /run.sh
 
 VOLUME /vol/static
-VOLUME /vol/certs
 
 # unprivileged nginx user for security
 USER nginx
