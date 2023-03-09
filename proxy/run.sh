@@ -3,9 +3,20 @@
 set -e
 
 if [ ! -f '/etc/letsencrypt/live/todoapi.peterstrele.com/fullchain.pem' ]; then
-    certbot certonly --nginx --non-interactive --agree-tos --email streleweb@gmail.com --domains todoapi.peterstrele.com
+    certbot certonly \
+        --nginx \
+        --non-interactive \
+        --agree-tos \
+        --email streleweb@gmail.com \
+        --domains todoapi.peterstrele.com \
+        --config-dir /var/lib/letsencrypt \
+        --work-dir /var/lib/letsencrypt \
+        --logs-dir /var/log/letsencrypt
 else
-    certbot renew
+    certbot renew \
+        --config-dir /var/lib/letsencrypt \
+        --work-dir /var/lib/letsencrypt \
+        --logs-dir /var/log/letsencrypt
 fi
     crond -f -d 8 &
 

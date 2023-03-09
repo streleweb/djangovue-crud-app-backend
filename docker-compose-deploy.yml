@@ -37,11 +37,14 @@ services:
       - 443:8000
     volumes:
       - static-data:/vol/static
-
-    user: "nginx" # Add this line to set the user of the mounted volumes
+      - certbot:/var/lib/letsencrypt
+      - logs:/var/log/letsencrypt
+    user: "nginx"
 
 volumes:
   postgres-data:
   static-data:
+  certbot:
+  logs:
 
 
