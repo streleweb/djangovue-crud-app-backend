@@ -4,7 +4,6 @@ server {
     ssl_certificate /etc/letsencrypt/live/todoapi.peterstrele.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/todoapi.peterstrele.com/privkey.pem;
 
-    include /etc/letsencrypt/options-ssl-nginx.conf;
 
     location /static {
         alias /vol/static;
