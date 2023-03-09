@@ -1,6 +1,9 @@
 server {
     listen ${LISTEN_PORT} ssl;
 
+    ssl_certificate /etc/letsencrypt/live/todoapi.peterstrele.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/todoapi.peterstrele.com/privkey.pem;
+
     location /static {
         alias /vol/static;
     }
