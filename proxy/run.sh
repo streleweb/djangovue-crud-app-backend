@@ -20,6 +20,8 @@ else
 fi
 
 envsubst < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf
-/etc/init.d/nginx restart
+
+rm /tmp/nginx.pid
+nginx restart
 
 nginx -g 'daemon off;'
