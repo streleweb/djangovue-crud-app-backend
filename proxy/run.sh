@@ -19,11 +19,11 @@ else
         --logs-dir /var/log/letsencrypt
 fi
 
-crond -f -d 8 &
+# Restart Nginx service
+nginx -s stop
+nginx -s reload
 
 envsubst < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf
 
-# restart nginx
-nginx -s reload
 
 nginx -g 'daemon off;'
