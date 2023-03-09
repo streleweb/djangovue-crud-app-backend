@@ -11,7 +11,13 @@ ENV APP_PORT=9000
 
 USER root
 
-RUN apk add --no-cache augeas-libs certbot certbot-nginx python3 py3-pip && \
+RUN mkdir -p /var/log/letsencrypt && \
+    chown nginx:nginx /var/log/letsencrypt && \
+    chmod 700 /var/log/letsencrypt && \
+    mkdir -p /var/lib/letsencrypt && \
+    chown nginx:nginx /var/lib/letsencrypt && \
+    chmod 700 /var/lib/letsencrypt && \
+    apk add --no-cache augeas-libs certbot certbot-nginx python3 py3-pip && \
     python3 -m ensurepip && \
     mkdir -p /vol/static && \
     pip3 install --upgrade pip && \
