@@ -15,11 +15,4 @@ server {
         client_max_body_size 10M;
     }
 
-    location /.well-known/acme-challenge {
-        add_header 'Access-Control-Allow-Origin' '*';
-        proxy_set_header X-Forwarded-Host ${APP_HOST};
-        proxy_set_header X-Forwarded-Server ${APP_HOST};
-
-        proxy_pass http://certbot:80;
-    }
 }
