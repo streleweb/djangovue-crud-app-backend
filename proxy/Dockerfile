@@ -22,20 +22,10 @@ RUN apk add --no-cache augeas-libs certbot certbot-nginx python3 py3-pip && \
     chown nginx:nginx /etc/nginx/conf.d/default.conf && \
     chmod +x /run.sh
 
-# Create a script to obtain and renew SSL certificates
-RUN echo "#!/bin/sh\n\
-    set -e\n\
-    if [ ! -f '/etc/letsencrypt/live/todoapi.peterstrele.com/fullchain.pem' ]; then\n\
-    certbot certonly --nginx --non-interactive --agree-tos --email streleweb@gmail.com --domains todoapi.peterstrele.com\n\
-    else\n\
-    certbot renew\n\
-    fi\n\
-    crond -f -d 8 &\n\
-    " > /ssl.sh && chmod +x /ssl.sh
-
 VOLUME /vol/static
 
 # unprivileged nginx user for security
 USER nginx
 
+# obtains || renews SSL certificates and runs nginx in foreground
 CMD ["/run.sh"]
