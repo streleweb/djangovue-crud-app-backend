@@ -17,7 +17,6 @@ RUN apk add --no-cache augeas-libs certbot certbot-nginx python3 py3-pip && \
     pip3 install --upgrade pip && \
     pip3 install virtualenv && \
     virtualenv /opt/certbot && \
-    ln -s /opt/certbot/bin/certbot /usr/bin/certbot && \
     chmod 755 /vol/static && \
     touch /etc/nginx/conf.d/default.conf && \
     chown nginx:nginx /etc/nginx/conf.d/default.conf && \
