@@ -17,8 +17,8 @@ RUN mkdir -p /var/log/letsencrypt && \
     mkdir -p /var/lib/letsencrypt && \
     chown nginx:nginx /var/lib/letsencrypt && \
     chmod 700 /var/lib/letsencrypt && \
-    chown nginx:nginx /tmp/nginx.pid && \
-    chmod 700 /tmp/nginx.pid && \
+    chown nginx:nginx /tmp && \
+    chmod 700 /tmp && \
     apk add --no-cache augeas-libs certbot certbot-nginx python3 py3-pip && \
     python3 -m ensurepip && \
     mkdir -p /vol/static && \
