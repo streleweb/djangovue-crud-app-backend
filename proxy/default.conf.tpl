@@ -4,6 +4,8 @@ server {
     ssl_certificate /etc/letsencrypt/live/todoapi.peterstrele.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/todoapi.peterstrele.com/privkey.pem;
 
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+
     location /static {
         alias /vol/static;
     }
@@ -15,7 +17,10 @@ server {
     }
 
     location /.well-known/acme-challenge {
+        add_header 'Access-Control-Allow-Origin' '*';
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_pass http://certbot:80;
-
     }
 }
