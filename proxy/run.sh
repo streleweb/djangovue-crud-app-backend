@@ -24,6 +24,6 @@ crond -f -d 8 &
 envsubst < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf
 
 # restart nginx
-service nginx restart
+nginx -s reload
 
 nginx -g 'daemon off;'
