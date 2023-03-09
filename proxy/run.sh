@@ -21,7 +21,4 @@ fi
 
 envsubst < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf
 
-rm /tmp/nginx.pid
-nginx restart
-
 nginx -g 'daemon off;'
