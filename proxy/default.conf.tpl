@@ -19,7 +19,7 @@ server {
         add_header 'Access-Control-Allow-Origin' '*';
         proxy_set_header X-Forwarded-Host ${APP_HOST};
         proxy_set_header X-Forwarded-Server ${APP_HOST};
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
         proxy_pass http://certbot:80;
     }
 }
