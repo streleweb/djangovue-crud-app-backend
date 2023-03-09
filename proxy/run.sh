@@ -19,10 +19,6 @@ else
         --logs-dir /var/log/letsencrypt
 fi
 
-# Restart Nginx service
-nginx -s stop
-nginx -s reload
-
 envsubst < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf
 
 
