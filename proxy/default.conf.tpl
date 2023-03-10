@@ -1,5 +1,5 @@
 server {
-    listen ${LISTEN_PORT} ssl;
+    listen ${LISTEN_PORT};
 
     ssl_certificate /var/lib/letsencrypt/live/todoapi.peterstrele.com/fullchain.pem;
     ssl_certificate_key /var/lib/letsencrypt/live/todoapi.peterstrele.com/privkey.pem;
