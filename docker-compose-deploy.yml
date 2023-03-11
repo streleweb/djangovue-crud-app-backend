@@ -34,13 +34,11 @@ services:
     depends_on:
       - app
     ports:
-      - 80:8000
       - 443:8000
     volumes:
       - static-data:/vol/static
       - certbot:/var/lib/letsencrypt
       - logs:/var/log/letsencrypt
-    user: "nginx"
 
 volumes:
   postgres-data:

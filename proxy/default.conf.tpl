@@ -1,6 +1,6 @@
 server {
-    listen 443 ssl http/2 default_server;
-    listen [::]:80 default_server;
+    listen ${LISTEN_PORT} ssl http2;
+    listen [::]:443 ssl http2;
 
     ssl_certificate /var/lib/letsencrypt/live/todoapi.peterstrele.com/fullchain.pem;
     ssl_certificate_key /var/lib/letsencrypt/live/todoapi.peterstrele.com/privkey.pem;
