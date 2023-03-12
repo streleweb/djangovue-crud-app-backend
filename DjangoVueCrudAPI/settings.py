@@ -64,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsPostCsrfMiddleware'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
@@ -73,10 +74,14 @@ CORS_ORIGIN_WHITELIST = ['http://localhost:3000',
 CORS_ALLOW_HEADERS = ['Content-Type',
                       'Access-Control-Allow-Headers',
                       'accept',
+                      'origin',
+                      'accept-encoding'
                       'x-csrftoken',
-                      'Authorization']
-CORS_ALLOW_METHODS = ['GET', 'POST', 'OPTIONS']
+                      'Authorization',
+                      'x-requested-with',]
+CORS_ALLOW_METHODS = ['GET', 'POST', 'OPTIONS', 'DELETE', 'PUT', 'PATCH']
 CORS_PREFLIGHT_MAX_AGE = 86400
+CORS_ALLOW_CREDENTIALS = True
 
 
 ROOT_URLCONF = 'DjangoVueCrudAPI.urls'
