@@ -67,9 +67,9 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000, https://streleweb-todo-app.com',
-)
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000',
+                         'https://streleweb-todo-app.com'
+                         ]
 
 ROOT_URLCONF = 'DjangoVueCrudAPI.urls'
 
