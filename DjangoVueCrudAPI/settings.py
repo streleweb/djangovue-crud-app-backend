@@ -71,6 +71,8 @@ CORS_ORIGIN_WHITELIST = ['http://localhost:3000',
                          'https://streleweb-todo-app.com'
                          ]
 CORS_ALLOW_HEADERS = ['content-type', 'Access-Control-Allow-Headers']
+CORS_ALLOW_METHODS = ['GET', 'POST', 'OPTIONS']
+CORS_PREFLIGHT_MAX_AGE = 86400
 
 
 ROOT_URLCONF = 'DjangoVueCrudAPI.urls'
