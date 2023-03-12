@@ -8,7 +8,7 @@ if [ ! -f '/etc/letsencrypt/live/ec2-18-216-246-117.us-east-2.compute.amazonaws.
         --non-interactive \
         --agree-tos \
         --email streleweb@gmail.com \
-        --domains ec2-18-216-246-117.us-east-2.compute.amazonaws.com todoapi.peterstrele.com \
+        --domains ec2-18-216-246-117.us-east-2.compute.amazonaws.com \
         --config-dir /var/lib/letsencrypt \
         --work-dir /var/lib/letsencrypt \
         --logs-dir /var/log/letsencrypt
