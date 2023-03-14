@@ -22,7 +22,7 @@ from users.views import CustomAuthToken, ManageUserView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('todos/', include('todos.urls'), name='todos'),
-    path('notes/', include('notes.urls'), name='notes'),
+    # path('notes/', include('notes.urls'), name='notes'),
     path('users/', include('users.urls'), name='users'),
     # path('register/', CreateUserView.as_view(), name='create-user'),
     path('login/', CustomAuthToken.as_view(), name='user-token'),
